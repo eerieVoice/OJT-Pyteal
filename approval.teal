@@ -1,0 +1,140 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l24
+txn ApplicationID
+int 0
+==
+bnz main_l23
+txn ApplicationID
+int 0
+==
+bnz main_l22
+txn OnCompletion
+int OptIn
+==
+bnz main_l21
+txn OnCompletion
+int CloseOut
+==
+bnz main_l20
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l19
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l18
+txn OnCompletion
+int NoOp
+==
+bnz main_l9
+err
+main_l9:
+global GroupSize
+int 1
+==
+assert
+txna ApplicationArgs 0
+byte "scorePlayer1"
+==
+bnz main_l17
+txna ApplicationArgs 0
+byte "noScorePlayer1"
+==
+bnz main_l16
+txna ApplicationArgs 0
+byte "scorePlayer2"
+==
+bnz main_l15
+txna ApplicationArgs 0
+byte "noScorePlayer2"
+==
+bnz main_l14
+err
+main_l14:
+txn Sender
+byte "ScoreO"
+app_local_get
+store 1
+txn Sender
+byte "ScoreO"
+load 1
+int 0
++
+app_local_put
+int 1
+return
+main_l15:
+txn Sender
+byte "ScoreO"
+app_local_get
+store 1
+txn Sender
+byte "ScoreO"
+load 1
+int 1
++
+app_local_put
+int 1
+return
+main_l16:
+txn Sender
+byte "ScoreX"
+app_local_get
+store 0
+txn Sender
+byte "ScoreX"
+load 0
+int 0
++
+app_local_put
+int 1
+return
+main_l17:
+txn Sender
+byte "ScoreX"
+app_local_get
+store 0
+txn Sender
+byte "ScoreX"
+load 0
+int 1
++
+app_local_put
+int 1
+return
+main_l18:
+int 0
+return
+main_l19:
+int 0
+return
+main_l20:
+int 0
+return
+main_l21:
+int 1
+return
+main_l22:
+txn Sender
+byte "ScoreO"
+int 0
+app_local_put
+int 1
+return
+main_l23:
+txn Sender
+byte "ScoreX"
+int 0
+app_local_put
+int 1
+return
+main_l24:
+byte "Count"
+int 0
+app_global_put
+int 1
+return
